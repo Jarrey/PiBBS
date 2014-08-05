@@ -17,7 +17,7 @@ def marquee_display_words(words, index = 0, min_x = 0, max_x = 84, min_y = 0, ma
     if len(txt) <= 14:
         lcd.display_words(words, min_x, max_x, min_y, max_y)
     else:
-        for t in xrange(max(2, 30//(len(txt)-13))):
+        for t in xrange(max(2, 30 // (len(txt) - 13))):
             for i in xrange(len(txt)-13):
                 copy_words = words[:]
                 copy_words[index] = txt[i:i+14]
