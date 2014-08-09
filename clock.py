@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import time
+import pcd8544 as lcd
+import pcd8544_ext as lcd_ext
 
 BACKGROUND = [
 0xC0, 0x20, 0x90, 0x48, 0x28, 0x24, 0x14, 0x14, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x05, 0x05,
@@ -39,13 +41,24 @@ BACKGROUND = [
 
 TEXT_AREA_REGION = [1, 1, 13, 5]
 
-def show_bg(call):
-    call(BACKGROUND)
-
-def show_time(call):            
-        w = [time.strftime(" %Y/%m/%d ", time.localtime()),
-             time.strftime("%A", time.localtime()),
-             ' '*12,
-             time.strftime("  %H:%M:%S", time.localtime()).ljust(12)]
+def show_time():
+    lcd.draw_bitmap(BACKGROUND)
+    d = time.strftime("%A", time.localtime())
+    
+    cnt_space_char = 0
+    max_space = 12 - len(d)
+    
+    for i in xrange((max_space + 1) * 6):
+        if cnt_space_char > max_space:
+            cnt_space_char = 0
+        lcd.display_words([time.strftime(" %Y/%m/%d ", time.localtime()),
+                           (' ' * cnt_space_char + d).ljust(12),
+                           ' ' * 12,
+                           time.strftime("  %H:%M:%S", time.localtime()).ljust(12)], 
+                          TEXT_AREA_REGION[0] * 6, 
+                          TEXT_AREA_REGION[2] * 6, 
+                          TEXT_AREA_REGION[1], 
+                          TEXT_AREA_REGION[3])
         
-        call(w, 1, 4, TEXT_AREA_REGION[0] * 6, TEXT_AREA_REGION[2] * 6, TEXT_AREA_REGION[1], TEXT_AREA_REGION[3])
+        cnt_space_char += 1
+        time.sleep(.3)

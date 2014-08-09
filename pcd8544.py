@@ -23,10 +23,12 @@ def gotoxy(x, y):
   lcd_cmd(x+0x80)
   lcd_cmd(y+0x40)
 
-def draw_bitmap(bits, x = 0, y = 0):
+def draw_bitmap(bits, x = 0, y = 0, w = 84, h = 48):
   gotoxy(x, y)
-  for b in bits:
-    lcd_data(b)
+  for i in xrange(h // 8):
+    for j in xrange(w):
+        lcd_data(bits[i * w + j])
+    gotoxy(x, y + 1 + i)
   gotoxy(0, 0)
 
 def display_words(words, min_x = 0, max_x = 84, min_y = 0, max_y = 6):
@@ -90,7 +92,7 @@ def setup(contrast):
   GPIO.setup(DC, GPIO.OUT)
   GPIO.setup(RST, GPIO.OUT)
   GPIO.setup(BG, GPIO.OUT)
-  time.sleep(0.1)
+  time.sleep(1)
   
   # toggle RST low to reset
   GPIO.output(RST, False)
@@ -102,6 +104,7 @@ def setup(contrast):
   lcd_cmd(0x20) # basic mode
   lcd_cmd(0xc) # non-inverted display
   
+  time.sleep(0.1)
   cls()
   
 def spi(c):
