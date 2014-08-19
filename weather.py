@@ -53,6 +53,8 @@ def show_weather(city, days = 5):
     
     # show graphic weather
     hur = time.localtime().tm_hour
+    if w == None: return
+    
     lcd.draw_bitmap(icon.WEATHER_ICONS[(w['weather_code'] + "N") if hur >= 18 or hur < 6 else w['weather_code']], w = 42, h = 48)
     
     if w['temp'] < 0:

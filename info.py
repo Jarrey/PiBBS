@@ -14,9 +14,9 @@ import weather
 import earthquake
 
 def show_info():
-    pi_logo.show_logo()
+    #pi_logo.show_logo()
     
-    clock.show_time()
+    #clock.show_time()
     
     sys_info.show_sys_info()
     
